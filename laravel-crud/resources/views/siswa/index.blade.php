@@ -10,9 +10,7 @@
                         <div class="panel-heading">
                             <h3 class="panel-title">Data Siswa</h3>
                             <div class="right">
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                                    Tambah Data Siswa
-                                </button>
+                                <button type="button" class="btn"data-toggle="modal" data-target="#exampleModal"><i class="lnr lnr-plus-circle"></i></button>
                             </div>
                         </div>
                         <div class="panel-body">
