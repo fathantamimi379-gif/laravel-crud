@@ -8,7 +8,7 @@
                 <div class="col-md-12">
                     <div class="panel">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Edit Data Siswa</h3>
+                            <h1 class="panel-title">Edit Data Siswa</h1>
                         </div>
                         <div class="panel-body">
                             <form action="/siswa/{{$siswa->id}}/update" method="POST">

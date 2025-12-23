@@ -8,7 +8,8 @@
                 <div class="col-md-12">
                     <div class="panel">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Data Siswa</h3>
+                            <h1 class="panel-title">Program Agenda Kegiatan</h1>
+                            <h1 class="panel-title">PPK Perencanaan dan Program BWS Kalimantan | Pontianak</h1>
                             <div class="right">
                                 <button type="button" class="btn"data-toggle="modal" data-target="#exampleModal"><i class="lnr lnr-plus-circle"></i></button>
                             </div>
