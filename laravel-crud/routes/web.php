@@ -29,3 +29,4 @@ Route::post('/siswa/create','App\Http\Controllers\SiswaController@create')->midd
 Route::get('/siswa/{id}/edit', [App\Http\Controllers\SiswaController::class, 'edit'])->middleware('auth');
 Route::post('/siswa/{id}/update', [App\Http\Controllers\SiswaController::class, 'update'])->middleware('auth');
 Route::get('/siswa/{id}/delete', [App\Http\Controllers\SiswaController::class, 'delete'])->middleware('auth');
+Route::get('/siswa/{id}/profile', [App\Http\Controllers\SiswaController::class, 'profile']);
