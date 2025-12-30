@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Siswa;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
+use Illuminate\Support\Str;
 
 class SiswaController extends Controller
 {
@@ -21,32 +21,41 @@ class SiswaController extends Controller
 
     public function create(Request $request)
     {
+        // 1. Validasi Data
         $this->validate($request,[
-            'nama_depan' => 'min:5',
+            'nama_depan' => 'required|min:5',
             'nama_belakang' => 'required',
             'email' => 'required|email|unique:users',
             'jenis_kelamin' => 'required',
             'agama' => 'required',
             'avatar' => 'mimes:jpeg,png',
         ]);
-        //insert ke table user
+
+        // 2. Insert ke table User (Enkripsi password dan simpan)
         $user = new \App\Models\User;
         $user->role = 'siswa';
-        $user->name = $request->nama_depan;
+        $user->name = $request->nama_depan; // Memastikan menggunakan 'name'
         $user->email = $request->email;
-        $user->password = bcrypt('rahasia');
-        $user->remember_token = \Illuminate\Support\Str::random(60);
+        $user->password = bcrypt('rahasia'); // Wajib Bcrypt agar bisa login
+        $user->remember_token = Str::random(60);
         $user->save();
 
-        //insert ke table siswa
-        $request->request->add(['user_id' =>$user->id ]);
+        // 3. Tambahkan user_id ke request untuk tabel Siswa
+        $request->request->add(['user_id' => $user->id]);
+
+        // 4. Insert ke table Siswa (Kecuali file avatar)
         $siswa = \App\Models\Siswa::create($request->all());
+
+        // 5. Proses Upload Avatar (Setelah data siswa ada)
         if($request->hasFile('avatar')){
-            $request->file('avatar')->move('images/',$request->file('avatar')->getClientOriginalName());
+            // Pindahkan file ke folder public/images
+            $request->file('avatar')->move('images/', $request->file('avatar')->getClientOriginalName());
+            // Update nama file di database
             $siswa->avatar = $request->file('avatar')->getClientOriginalName();
             $siswa->save();
         }
-        return redirect('/siswa')->with('sukses','Data added successfully');
+
+        return redirect('/siswa')->with('sukses', 'Data added successfully');
     }
 
     public function edit($id)
@@ -55,29 +64,29 @@ class SiswaController extends Controller
         return view('siswa.edit', ['siswa' => $siswa]);
     }
 
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         $siswa = \App\Models\Siswa::find($id);
         $siswa->update($request->all());
+
         if($request->hasFile('avatar')){
-            $request->file('avatar')->move('images/',$request->file('avatar')->getClientOriginalName());
+            $request->file('avatar')->move('images/', $request->file('avatar')->getClientOriginalName());
             $siswa->avatar = $request->file('avatar')->getClientOriginalName();
             $siswa->save();
         }
-        return redirect('/siswa')->with('sukses','Data berhasil di update');
+        return redirect('/siswa')->with('sukses', 'Data berhasil di update');
     }
 
     public function delete($id)
     {
         $siswa = \App\Models\Siswa::find($id);
-        $siswa->delete($siswa);
-        return redirect('/siswa')->with('sukses','Data berhasil di hapus');
+        $siswa->delete();
+        return redirect('/siswa')->with('sukses', 'Data berhasil di hapus');
     }
 
     public function profile($id)
     {
-    $siswa = \App\Models\Siswa::find($id);
-
-    return view('siswa.profile', ['siswa' => $siswa]);
+        $siswa = \App\Models\Siswa::find($id);
+        return view('siswa.profile', ['siswa' => $siswa]);
     }
 }
